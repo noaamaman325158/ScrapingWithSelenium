@@ -2,6 +2,7 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import time
 import re
+import datetime as dt
 def get_driver():
     """
     Define all the options and the configuration
@@ -32,6 +33,15 @@ def clean_text(text):
     # return output[1]
     return re.findall(r'\d+', text)[0]
 
+def write_text(text):
+    """
+    Extract only the temperature from text
+    :param text:
+    :return:
+    """
+    filename = f"{dt.now().strftime('%Y-%m-%d.%H-%M-%S')}.txt"
+    with open(filename, "w") as f:
+        f.write(text)
 def main():
     #Loading page .....
     driver = get_driver()
@@ -45,8 +55,16 @@ def main():
     time.sleep(2)
     #print(driver.current_url)
 
+    #Click on the home tab inside the main navigator
     driver.find_element(by="xpath", value="/html/body/nav/div/a").click()
     time.sleep(2)
+
+    #Extract the random number
+    while True:
+        time.sleep(2)
+        element = driver.find_element(by="xpath", value="/html/body/div[1]/div/h1[2]")
+        number_str = clean_text(element.text)
+        write_text(number_str)
 
 
 print(main())
