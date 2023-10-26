@@ -2,7 +2,8 @@ from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 import time
 import re
-import datetime as dt
+import datetime
+
 def get_driver():
     """
     Define all the options and the configuration
@@ -39,9 +40,10 @@ def write_text(text):
     :param text:
     :return:
     """
-    filename = f"{dt.now().strftime('%Y-%m-%d.%H-%M-%S')}.txt"
+    filename = f"{datetime.datetime.now().strftime('%Y-%m-%d.%H-%M-%S')}.txt"
     with open(filename, "w") as f:
         f.write(text)
+
 def main():
     #Loading page .....
     driver = get_driver()
